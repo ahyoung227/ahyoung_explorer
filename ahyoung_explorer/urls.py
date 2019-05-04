@@ -23,7 +23,7 @@ router.register('places', views.PlaceViewSet)
 router.register('geo_places', views.GeoJSONPlaceViewSet)
 
 urlpatterns = [
-    path('', views.MapView.as_view()),
+    path('', views.MapView.as_view(), name='home'),
     path('sms', views.SmsCreatePlaceView.as_view(), name='sms'),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),

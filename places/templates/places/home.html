@@ -24,6 +24,7 @@
     <script>
         let center = {{center|safe}};
         center.coordinates.reverse();
+        let baseUrl = "{{request.get_host}}";
         let changeUrl = "{% url 'admin:places_place_changelist' %}";
         let popup = function(f) {
             let p = f.properties;
@@ -46,7 +47,7 @@
         }).addTo(mymap);
 
         $.ajax({
-            url: "http://localhost:8000/api/geo_places/?format=json" 
+            url: baseUrl + "/api/geo_places/?format=json" 
         }).done(function(data) {
             for (var i = 0; i < data.features.length; i++) {
                 let f = data.features[i];
