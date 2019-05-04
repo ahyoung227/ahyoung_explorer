@@ -1,0 +1,5 @@
+*.pyc
+*.swp
+*.swo
+ahyoung_explorer/settings.py
+db.sqlite3

@@ -1,0 +1,62 @@
+{% load admin_urls %}
+{% load static %}
+<!DOCTYPE html>
+  <head>
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+   crossorigin=""/>
+    <link rel="stylesheet" href="{% static 'places/style/style.css' %}">
+ <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+   integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+   crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="shortcut icon" type="image/png" href="{% static 'places/favicon.png' %}"/>
+
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li id="app-name">Ahyoung explorer</li>
+        <li><a href="{% url 'admin:places_place_changelist' %}">Edit places</a></li>
+      </ul>
+    </nav>
+    <div id="map"></div>
+    <script>
+        let center = {{center|safe}};
+        center.coordinates.reverse();
+        let changeUrl = "{% url 'admin:places_place_changelist' %}";
+        let popup = function(f) {
+            let p = f.properties;
+            var html = "<p>" + f.properties.name + "</p>";
+            if (p.why) html += "<p>Why: " + p.why + "</p>";
+            if (p.suggestion) html += "<p>Suggestion: " + p.suggestion + "</p>";
+            if (p.feedback) html += "<p>Feedback: " + p.feedback + "</p>";
+            html += '<p><a href="' + changeUrl + f.id + '/change">Edit</a></p>';
+            return html
+        }
+        let mapUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}';
+        let attribution =  'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+        let token = 'pk.eyJ1IjoiY2Nwcm9jdG9yIiwiYSI6ImNqdjlzdnowdTA4MnY0NG8wcjJuNDZwdWUifQ.00Vx1aE4X8Pi9Pxr382erw'
+        var mymap = L.map('map').setView(center.coordinates, 13);
+        L.tileLayer(mapUrl, {
+            attribution:attribution,
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: token,
+        }).addTo(mymap);
+
+        $.ajax({
+            url: "http://localhost:8000/api/geo_places/?format=json" 
+        }).done(function(data) {
+            for (var i = 0; i < data.features.length; i++) {
+                let f = data.features[i];
+                f.geometry.coordinates.reverse();
+                let marker = L.marker(f.geometry.coordinates);
+                marker.bindPopup(popup(f)).openPopup();
+                marker.addTo(mymap);
+                console.log(f.geometry.coordinates);
+            }
+        })
+    </script>
+  </body>
+</html>

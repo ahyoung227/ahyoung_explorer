@@ -1,0 +1,32 @@
+body {
+    margin: 0;
+}
+nav {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    height: 40px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+}
+nav ul li {
+    display: inline-block;
+    padding: 10px;
+}
+
+nav a, nav a:visited {
+    color: #ecf0f1;
+    text-decoration: none;
+}
+
+#app-name {
+    color: #f1c40f;
+}
+#map { height: calc(100vh - 40px); }
+
+.leaflet-popup-content p {
+    margin: 0;
+
+}
