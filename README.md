@@ -30,4 +30,4 @@ A companion website was developed using **Django**, **Python**, and the **Leafle
 - Integrated Leaflet for geospatial data visualization
 
 ## Credit  
-Credit: Special thanks to Paulo Blikstein, Chris Proctor, and Jonathan Pang for their guidance and support throughout this project.
+Special thanks to Paulo Blikstein, Chris Proctor, and Jonathan Pang for their guidance and support throughout this project.
